@@ -1,0 +1,23 @@
+Testes com o ansible:
+
+hosts em:
+/etc/ansible/hosts (da para alterar, mas esse é o padrao
+
+Teste:
+====
+- ansible -i hosts www -m setup -u root
+- ansible -i hosts www -m ping -u root
+ 
+- ansible all -m ping -u root 
+
+====
+
+Para executar um playbook:
+====
+- ansible-playbook gw.yml
+apareceu a "vacinha falando"... para nao ter isso:
+export ANSIBLE_NOCOWS=1
+====
+
+Boa pagina para duvidas:
+http://docs.ansible.com/faq.html

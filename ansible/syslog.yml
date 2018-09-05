@@ -1,0 +1,58 @@
+- hosts: syslog
+  remote_user: root  
+  vars: 
+    diretorio_base: /home/sidney/Desktop/2014/inf520/ubuntu/conf
+
+  tasks:
+
+  - name: "instalacao de pacotes"
+    action: apt pkg={{item}} state=installed
+    with_items:
+      - wget 
+      - htop 
+      - iperf 
+      - iptraf 
+      - openssh-client 
+      - tcpdump 
+      - ntp 
+      - rsync
+      - rsyslog
+
+  - name: "copiando arquivo de configuracao do ntp e dns"
+    copy: src={{ item.origem }} dest={{ item.destino }} owner=root group=root mode=644
+    with_items:
+    - { origem: '{{diretorio_base}}/syslog/ntp.conf', destino: '/etc/ntp.conf' }
+    - { origem: '{{diretorio_base}}/syslog/resolv.conf', destino: '/etc/resolv.conf' }
+
+    notify: 
+    - restart ntp
+
+  - name: "copiando arquivo de configuracao do rsyslog"
+    copy: src={{ item.origem }} dest={{ item.destino }} owner=root group=root mode=644
+    with_items:
+    - { origem: '{{diretorio_base}}/syslog/rsyslog.conf', destino: '/etc/rsyslog.conf' }
+
+    notify: 
+    - restart rsyslog
+
+  - name: "Habilitando NTP no boot"
+    service: name=ntp enabled=yes
+
+  - name: "Habilitando rsyslog no boot"
+    service: name=rsyslog enabled=yes
+
+  - name: "Garantindo que rsyslog esta rodando"
+    service: name=rsyslog state=started
+
+  - name: "Garantindo que sshd esta rodando"
+    service: name=ssh state=started
+
+  handlers:
+
+    - name: restart ntp
+      service: name=ntp state=restarted
+
+    - name: restart rsyslog
+      service: name=rsyslog state=restarted
+
+
