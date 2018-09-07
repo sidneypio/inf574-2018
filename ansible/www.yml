@@ -4,7 +4,9 @@
     diretorio_base: /root/inf574-2018/ansible/conf
 
   tasks:
-
+  - apk:
+    update_cache: yes
+    
   - name: "instalacao de pacotes"
     action: apk pkg={{item}} state=installed
     with_items:
@@ -12,59 +14,15 @@
       - htop 
       - iperf 
       - iptraf-ng 
-      - openssh-client 
       - tcpdump 
       - ntp 
-      - rsync
-      - apache2
-      - php5
-      - libapache2-mod-php5
-      - mysql-server
-      - php5-mysql
-
-
-
-  - name: "copiando arquivo de configuracao do ntp e dns"
-    copy: src={{ item.origem }} dest={{ item.destino }} owner=root group=root mode=644
-    with_items:
-    - { origem: '{{diretorio_base}}/email/ntp.conf', destino: '/etc/ntp.conf' }
-    - { origem: '{{diretorio_base}}/email/resolv.conf', destino: '/etc/resolv.conf' }
-
-    notify: 
-    - restart ntp
-
-
-  - name: "copiando arquivo de configuracao do apache"
-    copy: src={{ item.origem }} dest={{ item.destino }} owner=root group=root mode=644
-    with_items:
-    - { origem: '{{diretorio_base}}/http/teste.php', destino: '/var/www/html/teste.php' }
-
-    notify: 
-    - restart apache
 
   - name: "Habilitando NTP no boot"
     service: name=ntp enabled=yes
-
-  - name: "Habilitando apache no boot"
-    service: name=apache2 enabled=yes
-
-  - name: "Garantindo que apache esta rodando"
-    service: name=apache2 state=started
 
   - name: "Garantindo que sshd esta rodando"
     service: name=ssh state=started
 
   handlers:
 
-    - name: restart ntp
-      service: name=ntp state=restarted
-
-#    - name: restart rsyslog
-#      service: name=rsyslog state=restarted
-
-    - name: restart apache
-      service: name=apache2 state=restarted
-
-    - name: restart dovecot
-      service: name=dovecot state=restarted
 

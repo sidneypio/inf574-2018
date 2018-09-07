@@ -1,7 +1,7 @@
 www1 ansible_ssh_host=fc00::10 ansible_python_interpreter=/usr/bin/python3
 
 [servidores]
-www ansible_ssh_host=fc00::10
+www 
 
 [servidores:vars]
 ansible_python_interpreter=/usr/bin/python3
