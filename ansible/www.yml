@@ -4,16 +4,13 @@
     diretorio_base: /root/inf574-2018/ansible/conf
 
   tasks:
-  - apk:
-    update_cache: yes
-    
   - name: "instalacao de pacotes"
-    action: apk pkg={{item}} state=installed
+    action: apt pkg={{item}} state=installed
     with_items:
       - wget 
       - htop 
       - iperf 
-      - iptraf-ng 
+      - iptraf 
       - tcpdump 
       - ntp 
 
