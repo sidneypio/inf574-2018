@@ -1,17 +1,17 @@
-- hosts: http
+- hosts: www
   remote_user: root  
   vars: 
-    diretorio_base: /home/sidney/Desktop/2014/inf520/ubuntu/conf
+    diretorio_base: /root/inf574-2018/ansible/conf
 
   tasks:
 
   - name: "instalacao de pacotes"
-    action: apt pkg={{item}} state=installed
+    action: apk pkg={{item}} state=installed
     with_items:
       - wget 
       - htop 
       - iperf 
-      - iptraf 
+      - iptraf-ng 
       - openssh-client 
       - tcpdump 
       - ntp 
