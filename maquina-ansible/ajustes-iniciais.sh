@@ -7,10 +7,14 @@ echo "Copiando arquivos de configuracao"
 /bin/cp hosts /etc/hosts
 /bin/cp hostname /etc/hostname
 /bin/cp sshd_config /etc/ssh/sshd_config
+/bin/cp repositories /etc/apk
+
+/sbin/apk update
 
 echo "instalando dhpcd"
-apk add dhcpd
+/sbin/apk add dhcp
 /bin/cp dhcpd.conf /etc/dhcp/dhcpd.conf
+rc-update add dhcpd
 
 echo "ajustes no git"
 /sbin/apk add git
