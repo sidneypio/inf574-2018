@@ -1,12 +1,10 @@
-www1 ansible_ssh_host=fc00::10 ansible_python_interpreter=/usr/bin/python3
-
 [servidores]
 www 
+haproxy
 
 [servidores:vars]
 ansible_python_interpreter=/usr/bin/python3
 
-[clientes]
-cliente1 ansible_ssh_host=192.168.56.51
-cliente2 ansible_ssh_host=192.168.56.52
-
+[cache]
+cache1
+cache2

@@ -1,4 +1,4 @@
-- hosts: www
+- hosts: cache
   remote_user: root  
   vars: 
     diretorio_base: /root/inf574-2018/ansible/conf
@@ -6,7 +6,7 @@
   tasks:
   - name: "setando o hostname"
     hostname:
-      name: "{{ ansible_hostname }}"
+      name: "{{ inventory_hostname }}"
     
   - name: "instalacao de pacotes"
     action: apt pkg={{item}} state=installed
@@ -17,6 +17,7 @@
       - iptraf 
       - tcpdump 
       - ntp 
+      - squid
 
   - name: "Habilitando NTP no boot"
     service: name=ntp enabled=yes
