@@ -17,6 +17,8 @@
       - iptraf 
       - tcpdump 
       - ntp 
+      - rsyslog
+      - apache2
 
   - name: "Habilitando NTP no boot"
     service: name=ntp enabled=yes
@@ -24,6 +26,21 @@
   - name: "Garantindo que sshd esta rodando"
     service: name=ssh state=started
 
-  handlers:
+  - name: "copiando arquivos de configuracao"
+    copy: src={{ item.origem }} dest={{ item.destino }} owner=root group=root mode=644
+    with_items:
+    - { origem: '{{diretorio_base}}/www/ntp.conf', destino: '/etc/ntp.conf' }
+    - { origem: '{{diretorio_base}}/www/rsyslog.conf', destino: '/etc/rsyslog.conf' }
+    - { origem: '{{diretorio_base}}/www/000-default.conf', destino: '/etc/apache2/sites-available/000-default.conf' }
+    - { origem: '{{diretorio_base}}/www/index.html', destino: '/var/www/html/index.html' }
 
+  handlers:
+    - name: restart ntp
+      service: name=ntp state=restarted
+
+    - name: restart rsyslog
+      service: name=rsyslog state=restarted
+
+    - name: restart apache2
+      service: name=apache2 state=restarted
 

@@ -1,4 +1,4 @@
-- hosts: cache
+- hosts: cache1
   remote_user: root  
   vars: 
     diretorio_base: /root/inf574-2018/ansible/conf
@@ -25,6 +25,15 @@
   - name: "Garantindo que sshd esta rodando"
     service: name=ssh state=started
 
-  handlers:
+  - name: "copiando arquivo de configuracao do squid"
+    copy: src={{ item.origem }} dest={{ item.destino }} owner=root group=root mode=644
+    with_items:
+    - { origem: '{{diretorio_base}}/cache/squid.conf', destino: '/etc/squid/squid.conf' }
 
+    notify: 
+    - restart squid
+    
+  handlers:
+    - name: restart squid
+      service: name=squid state=restarted
 

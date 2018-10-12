@@ -1,6 +1,8 @@
 [servidores]
 www 
 haproxy
+syslog
+ssh
 
 [servidores:vars]
 ansible_python_interpreter=/usr/bin/python3

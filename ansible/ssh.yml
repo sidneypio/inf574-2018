@@ -1,4 +1,4 @@
-- hosts: syslog
+- hosts: ssh
   remote_user: root  
   vars: 
     diretorio_base: /root/inf574-2018/ansible/conf
@@ -17,11 +17,12 @@
       - ntp 
       - rsync
       - rsyslog
+      - links2
 
   - name: "copiando arquivo de configuracao do ntp"
     copy: src={{ item.origem }} dest={{ item.destino }} owner=root group=root mode=644
     with_items:
-    - { origem: '{{diretorio_base}}/syslog/ntp.conf', destino: '/etc/ntp.conf' }
+    - { origem: '{{diretorio_base}}/ssh/ntp.conf', destino: '/etc/ntp.conf' }
 
     notify: 
     - restart ntp
@@ -29,7 +30,13 @@
   - name: "copiando arquivo de configuracao do rsyslog"
     copy: src={{ item.origem }} dest={{ item.destino }} owner=root group=root mode=644
     with_items:
-    - { origem: '{{diretorio_base}}/syslog/rsyslog.conf', destino: '/etc/rsyslog.conf' }
+    - { origem: '{{diretorio_base}}/ssh/rsyslog.conf', destino: '/etc/rsyslog.conf' }
+   
+  - name: "copiando arquivo de exemplo em python"
+    copy: src={{ item.origem }} dest={{ item.destino }} owner=root group=root mode=755
+    with_items:
+    - { origem: '{{diretorio_base}}/ssh/syslog1.py', destino: '/root/syslog1.py' }
+    - { origem: '{{diretorio_base}}/ssh/syslog2.py', destino: '/root/syslog2.py' }
 
     notify: 
     - restart rsyslog
